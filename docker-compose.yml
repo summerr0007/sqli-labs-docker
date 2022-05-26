@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+    ports:
+      - "3306:3306"
+  phpapache:
+    image: phpini-php5.3-apache
+    hostname: sqli
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    volumes:
+      - ./sqli-labs:/var/www/html
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8082:80"
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
